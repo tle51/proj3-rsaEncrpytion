@@ -85,7 +85,28 @@ public class RsaAlgorithm
     //Inverse of e mod phi i.e. (1+k*phi)/e
     public void generateD()
     {
-        
+        //Inverse of e mod phi i.e. (1+k*phi)/e
+        //Let k = 2
+        public void generateD()
+        {
+            hui1 = new HugeUnsignedInteger(phi);
+            hui2 = new HugeUnsignedInteger("2");
+            
+            String temp = hui1.multiplication(hui2); //Stores k * phi
+            
+            //HUI obj for 1 and k*phi value
+            one = new HugeUnsignedInteger("1");
+            HugeUnsignedInteger inverseHUI = new HugeUnsignedInteger(temp);
+            
+            //compute 1+*k*phi)
+            String inverse = inverseHUI.addition(one);
+            
+            //Make numerator and denominator HUI
+            HugeUnsignedInteger numerator = new HugeUnsignedInteger(inverse);
+            HugeUnsignedInteger denominator = new HugeUnsignedInteger(e);
+            
+            d = numerator.division(denominator); 
+        }
     }
     
 }//End of class
