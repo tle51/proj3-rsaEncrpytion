@@ -1,7 +1,7 @@
 public class Test{
   public static void main(String args[]){
-    HugeUnsignedInteger one = new HugeUnsignedInteger("9999999999");
-    HugeUnsignedInteger two = new HugeUnsignedInteger("2222222222");
+    HugeUnsignedInteger one = new HugeUnsignedInteger("3627272327");
+    HugeUnsignedInteger two = new HugeUnsignedInteger("227272723");
     
     //Addition
     System.out.println("Add: " + one.addition(two));
@@ -18,5 +18,18 @@ public class Test{
     //System.out.println(56 / 10 % 10);
     System.out.println("Multiply: " + one.multiplication(two));
     
+    //Division
+    //System.out.println(1423234/23238);
+    //System.out.println(9999/111);
+    System.out.println("Division: " + one.division(two));
+    
+    //Modulus
+    //System.out.println(3627272327%227272723);
+    System.out.println("Modulus: " + one.modulus(two));
+    
+    //Relational Operations
+    System.out.println("Equal: " + one.equalTo(two));
+    System.out.println("Greater: " + one.greaterThan(two));
+    System.out.println("Less: " + one.lessThan(two));
   } 
 }
