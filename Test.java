@@ -1,7 +1,10 @@
 public class Test{
   public static void main(String args[]){
-    HugeUnsignedInteger one = new HugeUnsignedInteger("3627272327");
-    HugeUnsignedInteger two = new HugeUnsignedInteger("227272723");
+    HugeUnsignedInteger one = new HugeUnsignedInteger("3242359292923939552");
+    HugeUnsignedInteger two = new HugeUnsignedInteger("12");
+    HugeUnsignedInteger three = new HugeUnsignedInteger("3242359292923939548");
+    HugeUnsignedInteger four = new HugeUnsignedInteger("12345");
+    HugeUnsignedInteger five = new HugeUnsignedInteger("12334");
     
     //Addition
     System.out.println("Add: " + one.addition(two));
@@ -25,6 +28,14 @@ public class Test{
     
     //Modulus
     //System.out.println(3627272327%227272723);
+    //System.out.println(0%10);
+//    try{
+//      System.out.println(one.subtraction(three));
+//      System.out.println(four.subtraction(five));
+//    }
+//    catch(SubtractionException e){
+//      System.err.println("Negative");
+//    }
     System.out.println("Modulus: " + one.modulus(two));
     
     //Relational Operations
