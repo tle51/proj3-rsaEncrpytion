@@ -184,31 +184,35 @@ public class Gui extends JFrame implements ActionListener{
     //Create random prime numbers
     public void generatePrime()
     {
-        try(BufferedReader read = new BufferedReader(new FileReader("prime.txt")))
+        String[] arr = new String[20];
+        //Read prime.txt file
+        try
         {
-            StringBuilder sb = new StringBuilder();
-            String line = read.readLine();
+            int i = 0;
+            Scanner sc = new Scanner(new File("prime.txt"));
             
-            while (line != null)
+            while(sc.hasNextLine())
             {
-                System.out.println(line);
-                
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = read.readLine();
+                String s = sc.nextLine();
+                arr[i] = s;
+                i++;
             }
-            String everything = sb.toString();
-            
-            //System.out.println(everything);
-            read.close();
         }
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            return;
         }
         
+        //Generate random number
+        Random r = new Random();
+        int temp = r.nextInt(20);
+        int temp2 = r.nextInt(20);
+        
+        //assign prime number to the random index of the array.
+        primeStr1 = arr[temp];
+        primeStr2 = arr[temp2];
+        
     }
-    
     //Key object to display the key information.
     public void createKey()
     {
