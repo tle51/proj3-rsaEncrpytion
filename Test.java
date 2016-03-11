@@ -1,10 +1,10 @@
 public class Test{
   public static void main(String args[]){
-    HugeUnsignedInteger one = new HugeUnsignedInteger("3242359292923939552");
-    HugeUnsignedInteger two = new HugeUnsignedInteger("12");
-    HugeUnsignedInteger three = new HugeUnsignedInteger("3242359292923939548");
-    HugeUnsignedInteger four = new HugeUnsignedInteger("12345");
-    HugeUnsignedInteger five = new HugeUnsignedInteger("12334");
+    HugeUnsignedInteger one = new HugeUnsignedInteger("999999");
+    HugeUnsignedInteger two = new HugeUnsignedInteger("999999");
+//    HugeUnsignedInteger three = new HugeUnsignedInteger("3242359292923939548");
+//    HugeUnsignedInteger four = new HugeUnsignedInteger("12345");
+//    HugeUnsignedInteger five = new HugeUnsignedInteger("12334");
     
     //Addition
     System.out.println("Add: " + one.addition(two));

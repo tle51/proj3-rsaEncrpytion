@@ -61,10 +61,18 @@ public class HugeUnsignedInteger{
       //If end of array1 -> copy rest of array2 contents
       if(j >= numDigit){
         tempArr[j] = tempArr[j] + value2.arr[j];
+        if(tempArr[j] >= 10){
+          tempArr[j] = tempArr[j] - 10;
+          tempArr[j+1] = tempArr[j+1] + 1;
+        }
       }
       //If end of array2 -> copy rest of array1 contents
       else if(j >= value2.numDigit){
         tempArr[j] = tempArr[j] + arr[j];
+        if(tempArr[j] >= 10){
+          tempArr[j] = tempArr[j] - 10;
+          tempArr[j+1] = tempArr[j+1] + 1;
+        }
       }
       else{
         int tempAdd = arr[j] + value2.arr[j];
@@ -75,7 +83,7 @@ public class HugeUnsignedInteger{
             tempArr[j] = tempAdd2;
           }
           else{
-            tempArr[j] = tempArr[j] + (tempAdd2 - 10);
+            tempArr[j] = tempAdd2 - 10;
             tempArr[j+1] = tempArr[j+1] + 1;
           }
         }
@@ -84,6 +92,11 @@ public class HugeUnsignedInteger{
           tempArr[j+1] = tempArr[j+1] + 1;
         }
       }
+      
+      for(i=0; i<tempSize; i++){
+        
+      }
+      
       j++;
     }
     //If there is an extra leading zero in the tempArr
@@ -448,13 +461,15 @@ public class HugeUnsignedInteger{
       }
     }
     //Convert array to string
-    int convertSize;
-    //Leading 0
-    if(quotientArr[numDigit-1] == 0){
-      convertSize = numDigit-1;
-    }
-    else{
-      convertSize = numDigit;
+    int convertSize = numDigit;
+    //Remove leading 0
+    for(i=numDigit-1; i>=0; i--){
+      if(quotientArr[i] == 0){
+        convertSize--;
+      }
+      else{
+        break;
+      }
     }
     for(i=convertSize-1; i>=0; i--){
       result = result + Integer.toString(quotientArr[i]);
