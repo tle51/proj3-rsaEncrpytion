@@ -421,6 +421,12 @@ public class HugeUnsignedInteger{
       return result;
     }
     
+    //Check if divisor is greater than dividend
+    if(lessThan(value2) == 1){
+      result = "0";
+      return result;
+    }
+    
     //Division Process
     for(i=numDigit-1; i>=0; i--){
       //System.out.println("STEP 1");
