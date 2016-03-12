@@ -4,6 +4,7 @@
  */
 import java.io.*;
 import java.lang.*;
+import java.nio.file.Files;
 
 public class RsaAlgorithm
 {
@@ -11,8 +12,12 @@ public class RsaAlgorithm
     private HugeUnsignedInteger hui1;
     private HugeUnsignedInteger hui2;
     private HugeUnsignedInteger one;
+    //tags for XML file format
+    private String startRsaTag = "<rsaKey>";
+    private String endRsaTag = "</rsaKey>";
+    private String fileName;
     
-    public RsaAlgorithm(String prime1, String prime2)
+    public RsaAlgorithm(String prime1, String prime2, String pubFile, String priFile)
     {
         p = prime1;
         q = prime2;
@@ -23,6 +28,11 @@ public class RsaAlgorithm
         generatePhi();
         generateN();
         generateE();
+        generateD();
+        
+        //create public and private keys
+        createPubKey(pubFile);
+        createPriKey(priFile);
     }
     
     //phi = (p-1) * (q-1)
@@ -66,7 +76,6 @@ public class RsaAlgorithm
         hui2 = new HugeUnsignedInteger(p);
         
         n = hui1.multiplication(hui2);
-        //n = hui1.modulus(hui2);
         System.out.println("Value of n: " + n);
     }
     
@@ -145,17 +154,17 @@ public class RsaAlgorithm
         String temp = hui1.multiplication(hui2); //Stores k * phi
         
         //HUI obj for 1 and k*phi value
-        one = new HugeUnsignedInteger("1"); 
+        one = new HugeUnsignedInteger("1");
         HugeUnsignedInteger inverseHUI = new HugeUnsignedInteger(temp);
         
         //compute 1+*k*phi)
-        String inverse = inverseHUI.addition(one); 
+        String inverse = inverseHUI.addition(one);
         
         //Make numerator and denominator HUI
         HugeUnsignedInteger numerator = new HugeUnsignedInteger(inverse);
         HugeUnsignedInteger denominator = new HugeUnsignedInteger(e);
         
-        d = numerator.division(denominator); 
+        d = numerator.division(denominator);
     }
     
     //get the value of d
@@ -163,4 +172,49 @@ public class RsaAlgorithm
     {
         return d;
     }
+    
+    public void createPubKey(String file)
+    {
+        //add .txt file format to the file name
+        fileName = file.concat(".txt");
+        try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
+        {
+            //write XML format to the file
+            writing.write(startRsaTag);
+            writing.newLine();
+            //write values of e and n
+            writing.write("<evalue>" + e + "</evalue>");
+            writing.newLine();
+            writing.write("<nvalue>" + n + "</nvalue>");
+            writing.newLine();
+            writing.write(endRsaTag);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void createPriKey(String file)
+    {
+        //add .txt file format to the file name 
+        fileName = file.concat(".txt");
+        try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
+        {
+            //write XML format to the file
+            writing.write(startRsaTag);
+            writing.newLine();
+            //write values of d and n
+            writing.write("<dvalue>" + d + "</dvalue>");
+            writing.newLine();
+            writing.write("<nvalue>" + n + "</nvalue>");
+            writing.newLine();
+            writing.write(endRsaTag);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
 }//End of class

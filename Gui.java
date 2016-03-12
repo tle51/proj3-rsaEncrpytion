@@ -126,8 +126,9 @@ public class Gui extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "You must enter values for both prime numbers.",
                                               "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-            else
+            else{
                 primeHandler();
+            }
         }
         
         if(str.equals("Create Key"))
@@ -153,18 +154,41 @@ public class Gui extends JFrame implements ActionListener{
     {
         String prime1 = primeField.getText();
         String prime2 = primeField2.getText();
-        
-        //Set prime numbers to the user input
         primeStr1 = prime1;
         primeStr2 = prime2;
         
-        System.out.println("prime1 " + prime1);
-        System.out.println("prime2 " + prime2);
-        
-        if(primeCheck(prime1))
-            System.out.println("number is prime");
-        else
-            System.out.println("not prime");
+        //Check if the values are prime number
+        /*		if(primeCheck(prime1) && primeCheck(prime2))
+         {
+         //Set prime numbers to the user input
+         primeStr1 = prime1;
+         primeStr2 = prime2;
+         
+         //System.out.println("prime1 " + prime1);
+         //System.out.println("prime2 " + prime2);
+         }
+         //Both numbers are not prime
+         else if(!primeCheck(prime1) && !primeCheck(prime2))
+         {
+         JOptionPane.showMessageDialog(null, "The values are not prime numbers.\n" + "Please enter the values again.",
+         "Error", JOptionPane.INFORMATION_MESSAGE);
+         return;
+         }
+         //First value is not prime
+         else if(!primeCheck(prime1))
+         {
+         JOptionPane.showMessageDialog(null, "First value is not a prime number.\n" + "Please enter the value again.",
+         "Error", JOptionPane.INFORMATION_MESSAGE);
+         return;
+         }
+         //Second value is not prime
+         else if(!primeCheck(prime2))
+         {
+         JOptionPane.showMessageDialog(null, "Second value is not a prime number.\n" + "Please enter the value again.",
+         "Error", JOptionPane.INFORMATION_MESSAGE);
+         return;
+         }
+         */
     }
     
     //Check if for prime number
@@ -173,15 +197,13 @@ public class Gui extends JFrame implements ActionListener{
         HugeUnsignedInteger hui = new HugeUnsignedInteger(p);
         HugeUnsignedInteger two = new HugeUnsignedInteger("2");
         
+        //Divide the number by 2.
         String nStr = hui.division(two);
-        
         HugeUnsignedInteger nHui = new HugeUnsignedInteger(nStr);
         
         Long nl = Long.parseLong(nStr);
         System.out.println("long nstr" + nl);
-        //		if(Long.parseLong(p) <= 1)
-        //			return false;
-        //HugeUnsignedInteger x;
+        
         int i = 0;
         for(i = 2; i <= (Long.parseLong(nStr)); i++)
         {
@@ -190,9 +212,13 @@ public class Gui extends JFrame implements ActionListener{
             System.out.println("s isi " + s);
             HugeUnsignedInteger x = new HugeUnsignedInteger(s);
             
-            System.out.println("temp " + x.toString() + "  " + i);
+            x.printValue();
+            System.out.println("");
+            System.out.print("nhui   ");
+            hui.printValue();
+            System.out.println("     temp " + x + "  " + i);
             
-            String temp = nHui.modulus(x);
+            String temp = hui.modulus(x);
             
             System.out.println("temp2 " + temp);
             
@@ -211,11 +237,11 @@ public class Gui extends JFrame implements ActionListener{
     public void generatePrime()
     {
         String[] arr = new String[20];
-        //Read prime.txt file
+        //Read primeNumbers.rsc file
         try
         {
             int i = 0;
-            Scanner sc = new Scanner(new File("prime.txt"));
+            Scanner sc = new Scanner(new File("primeNumbers.rsc"));
             
             while(sc.hasNextLine())
             {
@@ -255,7 +281,7 @@ public class Gui extends JFrame implements ActionListener{
             generatePrime();
         }
         
-        RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2);
+        RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, "public", "private");
         
         panel2.add(l);
         //add panel to the container
