@@ -11,31 +11,21 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class Gui extends JFrame implements ActionListener{
-    private JTextField primeField;
-    private JTextField primeField2;
+    private JTextField primeField, primeField2;
     private JButton bt1;
-    private JMenuBar menuBar;
-    private JMenuBar helpBar;
+    private JMenuBar menuBar, helpBar;
     
-    private JMenuItem menu;
-    private JMenuItem keyMenu;
-    private JMenuItem blockMenu;
-    private JMenuItem unblockMenu;
-    private JMenuItem encrMenu;
-    private JMenuItem decrMenu;
-    private JMenuItem exitMenu;
+    private JMenuItem menu, keyMenu, blockMenu,
+    unblockMenu, encrMenu, decrMenu, exitMenu;
     
-    private JMenuItem aboutMenu;
-    private JMenuItem helpMenu;
-    private JMenuItem help;
+    private JMenuItem aboutMenu, helpMenu, help;
     
     private JPanel panel; //For Dropdown Menu
     private JPanel panel2; //Panel to display the output
     private JPanel fieldPanel; //Panel for 2 text fields
     private Container container;
     
-    private String primeStr1;
-    private String primeStr2;
+    private String primeStr1, primeStr2;
     
     public Gui()
     {
@@ -176,7 +166,31 @@ public class Gui extends JFrame implements ActionListener{
     public Boolean primeCheck(String p)
     {
         HugeUnsignedInteger hui = new HugeUnsignedInteger(p);
-        hui.toArray();
+        HugeUnsignedInteger two = new HugeUnsignedInteger("2");
+        
+        String nStr = hui.division(two);
+        HugeUnsignedInteger nHui = new HugeUnsignedInteger(nStr);
+        
+        //int n = Integer.parseInt(nStr);
+        int n = nStr.length();
+        
+        if(Long.parseLong(p) <= 1)
+            return false;
+        
+        for(int i = 2; i <= n; i++)
+        {
+            System.out.println("in for");
+            HugeUnsignedInteger x = new HugeUnsignedInteger("i");
+            System.out.println("temp");
+            
+            String temp = nHui.modulus(x);
+            
+            System.out.println("temp2");
+            
+            if(Long.parseLong(temp) == 0)
+                return false;
+            System.out.println("temp" + temp);
+        }
         
         return true;
     }
