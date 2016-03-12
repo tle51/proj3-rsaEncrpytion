@@ -1,7 +1,7 @@
 public class Test{
   public static void main(String args[]){
-    HugeUnsignedInteger one = new HugeUnsignedInteger("1111111");
-    HugeUnsignedInteger two = new HugeUnsignedInteger("9999");
+    HugeUnsignedInteger one = new HugeUnsignedInteger("50300");
+    HugeUnsignedInteger two = new HugeUnsignedInteger("9993");
 //    HugeUnsignedInteger three = new HugeUnsignedInteger("3242359292923939548");
 //    HugeUnsignedInteger four = new HugeUnsignedInteger("12345");
 //    HugeUnsignedInteger five = new HugeUnsignedInteger("12334");
