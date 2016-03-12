@@ -241,7 +241,7 @@ public class Gui extends JFrame implements ActionListener{
         try
         {
             int i = 0;
-            Scanner sc = new Scanner(new File("primeNumbers.rsc"));
+            Scanner sc = new Scanner(new File("primeNumbers.rsc.txt"));
             
             while(sc.hasNextLine())
             {
