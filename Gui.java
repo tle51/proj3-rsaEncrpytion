@@ -160,35 +160,47 @@ public class Gui extends JFrame implements ActionListener{
         
         System.out.println("prime1 " + prime1);
         System.out.println("prime2 " + prime2);
+        
+        if(primeCheck(prime1))
+            System.out.println("number is prime");
+        else
+            System.out.println("not prime");
     }
     
     //Check if for prime number
-    public Boolean primeCheck(String p)
+    public static Boolean primeCheck(String p)
     {
         HugeUnsignedInteger hui = new HugeUnsignedInteger(p);
         HugeUnsignedInteger two = new HugeUnsignedInteger("2");
         
         String nStr = hui.division(two);
+        
         HugeUnsignedInteger nHui = new HugeUnsignedInteger(nStr);
         
-        //int n = Integer.parseInt(nStr);
-        int n = nStr.length();
-        
-        if(Long.parseLong(p) <= 1)
-            return false;
-        
-        for(int i = 2; i <= n; i++)
+        Long nl = Long.parseLong(nStr);
+        System.out.println("long nstr" + nl);
+        //		if(Long.parseLong(p) <= 1)
+        //			return false;
+        //HugeUnsignedInteger x;
+        int i = 0;
+        for(i = 2; i <= (Long.parseLong(nStr)); i++)
         {
             System.out.println("in for");
-            HugeUnsignedInteger x = new HugeUnsignedInteger("i");
-            System.out.println("temp");
+            String s = Integer.toString(i);
+            System.out.println("s isi " + s);
+            HugeUnsignedInteger x = new HugeUnsignedInteger(s);
+            
+            System.out.println("temp " + x.toString() + "  " + i);
             
             String temp = nHui.modulus(x);
             
-            System.out.println("temp2");
+            System.out.println("temp2 " + temp);
             
             if(Long.parseLong(temp) == 0)
+            {
+                System.out.println("in is temp = 0?");
                 return false;
+            }
             System.out.println("temp" + temp);
         }
         
