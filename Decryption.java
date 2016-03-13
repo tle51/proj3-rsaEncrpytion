@@ -62,7 +62,7 @@ public class Decryption{
     HugeUnsignedInteger outputNumber;
     HugeUnsignedInteger tempNumber;
     String resultString;
-    int intD = Integer.parseInt(d.value);
+    long intD = Long.parseLong(d.value);
     //Read each block
     try{
       BufferedReader fRead = new BufferedReader(new FileReader(eFile));
@@ -78,18 +78,19 @@ public class Decryption{
       while((tempString = fRead.readLine()) != null){
         //Convert to HugeUnsignedInteger
         inputNumber = new HugeUnsignedInteger(tempString);
+        System.out.println(inputNumber.value);
         //C=M^d mod n
         outputNumber = new HugeUnsignedInteger("1");  //C = 1
         for(i=0; i<intD; i++){
           resultString = outputNumber.multiplication(inputNumber);
-          System.out.println("1: "+resultString);
+          //System.out.println("1: "+resultString);
           tempNumber =  new HugeUnsignedInteger(resultString);
           resultString = tempNumber.modulus(n);
-          System.out.println("2: "+resultString);
+          //System.out.println("2: "+resultString);
           outputNumber =  new HugeUnsignedInteger(resultString);
         }
         //Write to file
-        System.out.println(outputNumber.value);
+        //System.out.println(outputNumber.value);
         fWrite.write(outputNumber.value);
         fWrite.newLine();
       }

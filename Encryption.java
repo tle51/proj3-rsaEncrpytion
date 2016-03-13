@@ -61,6 +61,7 @@ public class Encryption{
     HugeUnsignedInteger outputNumber;
     HugeUnsignedInteger tempNumber;
     String resultString;
+    String tempString2 = "";
     int intE = Integer.parseInt(e.value);
     //Read each block
     try{
@@ -75,20 +76,42 @@ public class Encryption{
       
       int c;
       while((tempString = fRead.readLine()) != null){
+        //Remove leading zero
+        StringReader strRead = new StringReader(tempString);
+        tempString2 = "";
+        int zeroCount = 0;
+        try{
+          for(i=0; i<tempString.length(); i++){
+            char cc = (char) strRead.read();
+            if(cc == '0' && zeroCount == 0){
+              
+            }
+            else{
+              zeroCount = 1;
+              tempString2 = tempString2 + cc;
+            }
+          }
+        }
+        catch(IOException e){
+          System.err.println(e);
+        }
+        //System.out.println(tempString2);
+        
         //Convert to HugeUnsignedInteger
-        System.out.println(tempString);
-        inputNumber = new HugeUnsignedInteger(tempString);
+        inputNumber = new HugeUnsignedInteger(tempString2);
+        
         //C=M^e mod n
         outputNumber = new HugeUnsignedInteger("1");  //C = 1
         for(i=0; i<intE; i++){
           resultString = outputNumber.multiplication(inputNumber);
-          System.out.println("1: " + resultString);
+          //System.out.println("1: " + resultString);
           tempNumber =  new HugeUnsignedInteger(resultString);
           resultString = tempNumber.modulus(n);
-          System.out.println("2: " + resultString);
+          //System.out.println("2: " + resultString);
           outputNumber =  new HugeUnsignedInteger(resultString);
         }
         //Write to file
+        System.out.println(outputNumber.value);
         fWrite.write(outputNumber.value);
         fWrite.newLine();
       }
