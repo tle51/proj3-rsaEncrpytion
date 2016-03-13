@@ -13,8 +13,8 @@ public class RsaAlgorithm
     private HugeUnsignedInteger hui2;
     private HugeUnsignedInteger one;
     //tags for XML file format
-    private String startRsaTag = "<rsaKey>";
-    private String endRsaTag = "</rsaKey>";
+    private String startRsaTag = "<rsakey>";
+    private String endRsaTag = "</rsakey>";
     private String fileName;
     
     public RsaAlgorithm(String prime1, String prime2, String pubFile, String priFile)
@@ -26,6 +26,7 @@ public class RsaAlgorithm
         System.out.println(q);
         
         generatePhi();
+        System.out.println(phi);
         generateN();
         generateE();
         generateD();
@@ -89,8 +90,8 @@ public class RsaAlgorithm
     public int isGcd(String s)
     {
         System.out.println("in isGCD");
-        //		hui1 = new HugeUnsignedInteger(s);
-        //		HugeUnsignedInteger phiHui = new HugeUnsignedInteger(phi);
+        //  hui1 = new HugeUnsignedInteger(s);
+        //  HugeUnsignedInteger phiHui = new HugeUnsignedInteger(phi);
         String temp = "0";
         String phiTemp = phi; //set the value of phi to a temp variable
         System.out.println(phiTemp);
@@ -110,6 +111,8 @@ public class RsaAlgorithm
         }
         System.out.println("end of isGCD" + temp);
         
+        //Reset phi to its original value
+        phi = phiTemp;
         return Integer.parseInt(s);
     }
     
@@ -145,13 +148,15 @@ public class RsaAlgorithm
     }
     
     //Inverse of e mod phi i.e. (1+k*phi)/e
-    //Let k = 2
+    //Let k = 1
     public void generateD()
     {
+        System.out.println("phi in D  " +phi);
         hui1 = new HugeUnsignedInteger(phi);
-        hui2 = new HugeUnsignedInteger("2");
+        hui2 = new HugeUnsignedInteger("1");
         
         String temp = hui1.multiplication(hui2); //Stores k * phi
+        System.out.println("temp in gen D  " + phi + " " +temp);
         
         //HUI obj for 1 and k*phi value
         one = new HugeUnsignedInteger("1");
@@ -176,7 +181,7 @@ public class RsaAlgorithm
     public void createPubKey(String file)
     {
         //add .txt file format to the file name
-        fileName = file.concat(".txt");
+        String fileName = file.concat(".txt");
         try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
         {
             //write XML format to the file

@@ -101,6 +101,12 @@ public class Gui extends JFrame implements ActionListener{
         //add panel to the container
         container = getContentPane();
         container.add(panel, BorderLayout.PAGE_START);
+        //container.add(Box.createRigidArea(new Dimension(500, 500)));
+        //container.add(panel, BoxLayout.X_AXIS);
+        //container.add(Box.createRigidArea(new Dimension(30, 30)));
+        //container.add(fieldPanel, BoxLayout.Y_AXIS);
+        //container.add(panel);
+        //container.add(fieldPanel);
         container.add(fieldPanel, BorderLayout.CENTER);
         
         //Set screen size and make it visible
@@ -134,13 +140,13 @@ public class Gui extends JFrame implements ActionListener{
         if(str.equals("Create Key"))
             createKey();
         else if(str.equals("Block a File"))
-            blockMenu();//System.out.println("BlockMenu"); //TODO
+            blockMenu();
         else if(str.equals("Unblock a File"))
-            System.out.println("unblock Menu"); //TODO
+            unblockMenu();
         else if(str.equals("Encrypt"))
-            System.out.println("Encrypt Menu"); //TODO
+            encryptMenu();
         else if(str.equals("Decrypt"))
-            System.out.println("decrypt menu"); //TODO
+            decryptMenu();
         else if(str.equals("Exit"))
             System.exit(0);
         else if(str.equals("About"))
@@ -158,37 +164,37 @@ public class Gui extends JFrame implements ActionListener{
         primeStr2 = prime2;
         
         //Check if the values are prime number
-        /*		if(primeCheck(prime1) && primeCheck(prime2))
-         {
-         //Set prime numbers to the user input
-         primeStr1 = prime1;
-         primeStr2 = prime2;
-         
-         //System.out.println("prime1 " + prime1);
-         //System.out.println("prime2 " + prime2);
-         }
-         //Both numbers are not prime
-         else if(!primeCheck(prime1) && !primeCheck(prime2))
-         {
-         JOptionPane.showMessageDialog(null, "The values are not prime numbers.\n" + "Please enter the values again.",
-         "Error", JOptionPane.INFORMATION_MESSAGE);
-         return;
-         }
-         //First value is not prime
-         else if(!primeCheck(prime1))
-         {
-         JOptionPane.showMessageDialog(null, "First value is not a prime number.\n" + "Please enter the value again.",
-         "Error", JOptionPane.INFORMATION_MESSAGE);
-         return;
-         }
-         //Second value is not prime
-         else if(!primeCheck(prime2))
-         {
-         JOptionPane.showMessageDialog(null, "Second value is not a prime number.\n" + "Please enter the value again.",
-         "Error", JOptionPane.INFORMATION_MESSAGE);
-         return;
-         }
-         */
+        if(primeCheck(prime1) && primeCheck(prime2))
+        {
+            //Set prime numbers to the user input
+            primeStr1 = prime1;
+            primeStr2 = prime2;
+            
+            //System.out.println("prime1 " + prime1);
+            //System.out.println("prime2 " + prime2);
+        }
+        //Both numbers are not prime
+        else if(!primeCheck(prime1) && !primeCheck(prime2))
+        {
+            JOptionPane.showMessageDialog(null, "The values are not prime numbers.\n" + "Please enter the values again.",
+                                          "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        //First value is not prime
+        else if(!primeCheck(prime1))
+        {
+            JOptionPane.showMessageDialog(null, "First value is not a prime number.\n" + "Please enter the value again.",
+                                          "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        //Second value is not prime
+        else if(!primeCheck(prime2))
+        {
+            JOptionPane.showMessageDialog(null, "Second value is not a prime number.\n" + "Please enter the value again.",
+                                          "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
     }
     
     //Check if for prime number
@@ -205,18 +211,16 @@ public class Gui extends JFrame implements ActionListener{
         System.out.println("long nstr" + nl);
         
         int i = 0;
-        for(i = 2; i <= (Long.parseLong(nStr)); i++)
+        for(i = 2; i <= Math.sqrt(nl); i+=2)
         {
             System.out.println("in for");
             String s = Integer.toString(i);
             System.out.println("s isi " + s);
             HugeUnsignedInteger x = new HugeUnsignedInteger(s);
             
-            x.printValue();
-            System.out.println("");
-            System.out.print("nhui   ");
-            hui.printValue();
-            System.out.println("     temp " + x + "  " + i);
+            System.out.println("x is" + x.value);
+            System.out.print("nhui   " +  nHui.value);
+            //System.out.println("     temp " + x + "  " + i);
             
             String temp = hui.modulus(x);
             
@@ -268,46 +272,134 @@ public class Gui extends JFrame implements ActionListener{
     //Key object to display the key information.
     public void createKey()
     {
-        //TODO
         //Set panel2 to invisible, to remove previous menu's output
         setVisible(false);
         container.remove(panel2);
         
-        JLabel l = new JLabel("KEY CREATE");
-        
         //Check if User entered prime number or not
-        if(primeStr1 == null && primeStr2 == null)
+        while(primeStr1 == null || primeStr2 == null)
         {
+            generatePrime();
             generatePrime();
         }
         
-        RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, "public", "private");
+        //Get name of public and private files.
+        String publicFile = JOptionPane.showInputDialog("Enter file name for public key.");
+        String privateFile = JOptionPane.showInputDialog("Enter file name for private key.");
         
+        RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, publicFile, privateFile);
+        
+        JLabel l = new JLabel("Public key " + publicFile + "was created successfully.\n");
+        JLabel l2 = new JLabel("Private key " + privateFile + "was created successfully.\n");
+        //l.setLocation(300, 300);
+        l.setBounds(10, 10, 50, 30);
         panel2.add(l);
+        panel2.add(l2);
+        //panel2.setLocation(600, 600);
+        //container.setLayout(null);
         //add panel to the container
         container = getContentPane();
-        container.add(panel2, BorderLayout.PAGE_END);
-        l.setVisible(true);
+        //container.add(panel2);
+        //panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
+        container.add(Box.createRigidArea(new Dimension(500, 500)));
+        container.add(panel2, BoxLayout.X_AXIS);
+        //container.add(panel2);
+        //container.setSize(200, 300);
+        setVisible(true);
         setVisible(true);
     }
     
     //Display Blocked File's information
     public void blockMenu()
     {
-        //TODO
         //Set panel2 to invisible, to remove previous menu's output
         setVisible(false);
         container.remove(panel2);
         
-        JLabel l = new JLabel("Block CREATE");
+        //Get name of the block file.
+        String messageFile = JOptionPane.showInputDialog("Enter file name of the message.");
+        String blockFile = JOptionPane.showInputDialog("Enter file name to save the block.");
+        String blockSize = JOptionPane.showInputDialog("Enter block size.");
+        
+        MessageBlocking blocking = new MessageBlocking(blockFile, Integer.parseInt(blockSize), messageFile);
+        JLabel l = new JLabel("Block File created successfully.");
         panel2.add(l);
         
         //add panel to the container
         container = getContentPane();
         container.add(panel2, BorderLayout.CENTER);
-        l.setVisible(true);
+        
+        setVisible(true);
         setVisible(true);
     }
+    
+    //Display Unblocked File's information
+    public void unblockMenu()
+    {
+        //Set panel2 to invisible, to remove previous menu's output
+        setVisible(false);
+        container.remove(panel2);
+        
+        //Get name of the block file.
+        String unblockFile = JOptionPane.showInputDialog("Enter filename containg the block.");
+        //String messageFile = JOptionPane.showInputDialog("Enter file name of the message.");
+        
+        MessageUnblocking unblocking = new MessageUnblocking(unblockFile);
+        JLabel l = new JLabel("unblocking File successfully done.");
+        panel2.add(l);
+        
+        //add panel to the container
+        container = getContentPane();
+        container.add(panel2, BorderLayout.CENTER);
+        
+        setVisible(true);
+        setVisible(true);
+    }
+    
+    //Display Unblocked File's information
+    public void encryptMenu()
+    {
+        //Set panel2 to invisible, to remove previous menu's output
+        setVisible(false);
+        container.remove(panel2);
+        
+        //Get name of the block file.
+        String encryptFile = JOptionPane.showInputDialog("Enter file name of private or public key");
+        
+        MessageUnblocking unblocking = new MessageUnblocking(encryptFile);		
+        JLabel l = new JLabel("Encryption done successfully.");
+        panel2.add(l);
+        
+        //add panel to the container
+        container = getContentPane();
+        container.add(panel2, BorderLayout.CENTER);
+        
+        setVisible(true);
+        setVisible(true);
+    }	
+    
+    //Display Unblocked File's information
+    public void decryptMenu()
+    {
+        //Set panel2 to invisible, to remove previous menu's output
+        setVisible(false);
+        container.remove(panel2);
+        
+        //Get name of the file to decrypt from
+        String decryptFile = JOptionPane.showInputDialog("Enter filename to decrpt from.");
+        
+        Decryption decrypt = new Decryption(decryptFile);		
+        JLabel l = new JLabel("Decryption done successfully.");
+        panel2.add(l);
+        
+        //add panel to the container
+        container = getContentPane();
+        container.add(panel2, BorderLayout.CENTER);
+        
+        setVisible(true);
+        setVisible(true);
+    }
+				
     //Message displaying information about the program.
     private void about()
     {
