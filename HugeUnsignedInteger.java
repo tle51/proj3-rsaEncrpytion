@@ -553,7 +553,7 @@ public class HugeUnsignedInteger{
       return 0;
     }
   }
-  
+
   //------------Test----------------
   public int getDigit(){
     return numDigit;
