@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.*;
 
 public class Gui extends JFrame implements ActionListener{
@@ -29,6 +30,8 @@ public class Gui extends JFrame implements ActionListener{
     
     public Gui()
     {
+        super("RSA Encryption Decryption");
+        
         panel = new JPanel(); //panel object
         panel2 = new JPanel();
         fieldPanel = new JPanel();
@@ -41,8 +44,6 @@ public class Gui extends JFrame implements ActionListener{
         //Set up text field to get prime numbers
         primeField.setText("Prime 1");
         primeField2.setText("Prime 2");
-        //primeField.addActionListener(this);
-        //primeField2.addActionListener(this);
         bt1.addActionListener(this);
         
         /* MenuBar RSA has the following Menu list:
@@ -89,6 +90,10 @@ public class Gui extends JFrame implements ActionListener{
         helpMenu.add(help);
         help.addActionListener(this);
         
+        //Set size of the text field
+        primeField.setMaximumSize(new Dimension(Integer.MAX_VALUE, primeField.getMinimumSize().height));
+        primeField2.setMaximumSize(new Dimension(Integer.MAX_VALUE, primeField2.getMinimumSize().height));
+        
         //Add the text field to the panel
         fieldPanel.add(primeField);
         fieldPanel.add(primeField2);
@@ -101,16 +106,10 @@ public class Gui extends JFrame implements ActionListener{
         //add panel to the container
         container = getContentPane();
         container.add(panel, BorderLayout.PAGE_START);
-        //container.add(Box.createRigidArea(new Dimension(500, 500)));
-        //container.add(panel, BoxLayout.X_AXIS);
-        //container.add(Box.createRigidArea(new Dimension(30, 30)));
-        //container.add(fieldPanel, BoxLayout.Y_AXIS);
-        //container.add(panel);
-        //container.add(fieldPanel);
-        container.add(fieldPanel, BorderLayout.CENTER);
+        container.add(fieldPanel);
         
         //Set screen size and make it visible
-        setSize(600, 600);
+        setSize(600, 300);
         setVisible(true);
     }
     
@@ -169,9 +168,6 @@ public class Gui extends JFrame implements ActionListener{
             //Set prime numbers to the user input
             primeStr1 = prime1;
             primeStr2 = prime2;
-            
-            //System.out.println("prime1 " + prime1);
-            //System.out.println("prime2 " + prime2);
         }
         //Both numbers are not prime
         else if(!primeCheck(prime1) && !primeCheck(prime2))
@@ -194,7 +190,6 @@ public class Gui extends JFrame implements ActionListener{
                                           "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
     }
     
     //Check if for prime number
@@ -289,23 +284,15 @@ public class Gui extends JFrame implements ActionListener{
         
         RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, publicFile, privateFile);
         
-        JLabel l = new JLabel("Public key " + publicFile + "was created successfully.\n");
-        JLabel l2 = new JLabel("Private key " + privateFile + "was created successfully.\n");
-        //l.setLocation(300, 300);
-        l.setBounds(10, 10, 50, 30);
+        JLabel l = new JLabel("Public key " + publicFile + " and private key " + privateFile + " was created successfully.");
+        
+        //make room between text field of prime numbers and the message.
+        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
+        
         panel2.add(l);
-        panel2.add(l2);
-        //panel2.setLocation(600, 600);
-        //container.setLayout(null);
-        //add panel to the container
         container = getContentPane();
-        //container.add(panel2);
-        //panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
-        container.add(Box.createRigidArea(new Dimension(500, 500)));
-        container.add(panel2, BoxLayout.X_AXIS);
-        //container.add(panel2);
-        //container.setSize(200, 300);
-        setVisible(true);
+        container.add(panel2, BorderLayout.SOUTH);
+        
         setVisible(true);
     }
     
@@ -325,11 +312,13 @@ public class Gui extends JFrame implements ActionListener{
         JLabel l = new JLabel("Block File created successfully.");
         panel2.add(l);
         
-        //add panel to the container
-        container = getContentPane();
-        container.add(panel2, BorderLayout.CENTER);
+        //make room between text field of prime numbers and the message.
+        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
         
-        setVisible(true);
+        panel2.add(l);
+        container = getContentPane();
+        container.add(panel2, BorderLayout.SOUTH);
+        
         setVisible(true);
     }
     
@@ -348,11 +337,13 @@ public class Gui extends JFrame implements ActionListener{
         JLabel l = new JLabel("unblocking File successfully done.");
         panel2.add(l);
         
-        //add panel to the container
-        container = getContentPane();
-        container.add(panel2, BorderLayout.CENTER);
+        //make room between text field of prime numbers and the message.
+        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
         
-        setVisible(true);
+        panel2.add(l);
+        container = getContentPane();
+        container.add(panel2, BorderLayout.SOUTH);
+        
         setVisible(true);
     }
     
@@ -366,15 +357,17 @@ public class Gui extends JFrame implements ActionListener{
         //Get name of the block file.
         String encryptFile = JOptionPane.showInputDialog("Enter file name of private or public key");
         
-        MessageUnblocking unblocking = new MessageUnblocking(encryptFile);		
+        Encryption encrypt = new Encryption(encryptFile);		
         JLabel l = new JLabel("Encryption done successfully.");
         panel2.add(l);
         
-        //add panel to the container
-        container = getContentPane();
-        container.add(panel2, BorderLayout.CENTER);
+        //make room between text field of prime numbers and the message.
+        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
         
-        setVisible(true);
+        panel2.add(l);
+        container = getContentPane();
+        container.add(panel2, BorderLayout.SOUTH);
+        
         setVisible(true);
     }	
     
@@ -392,11 +385,13 @@ public class Gui extends JFrame implements ActionListener{
         JLabel l = new JLabel("Decryption done successfully.");
         panel2.add(l);
         
-        //add panel to the container
-        container = getContentPane();
-        container.add(panel2, BorderLayout.CENTER);
+        //make room between text field of prime numbers and the message.
+        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
         
-        setVisible(true);
+        panel2.add(l);
+        container = getContentPane();
+        container.add(panel2, BorderLayout.SOUTH);
+        
         setVisible(true);
     }
 				
