@@ -61,8 +61,9 @@ public class Decryption{
     HugeUnsignedInteger inputNumber;
     HugeUnsignedInteger outputNumber;
     HugeUnsignedInteger tempNumber;
-    String resultString;
-    long intD = Long.parseLong(d.value);
+    HugeUnsignedInteger fVal;
+    HugeUnsignedInteger expVal;
+    HugeUnsignedInteger dd;
     //Read each block
     try{
       BufferedReader fRead = new BufferedReader(new FileReader(eFile));
@@ -74,31 +75,98 @@ public class Decryption{
       dFile.createNewFile();
       BufferedWriter fWrite = new BufferedWriter(new FileWriter(dFile, true));
       
-      int c;
+      //int c;
       while((tempString = fRead.readLine()) != null){
         //Convert to HugeUnsignedInteger
         inputNumber = new HugeUnsignedInteger(tempString);
-        System.out.println(inputNumber.value);
+        expVal = new HugeUnsignedInteger(tempString);
+        System.out.println(tempString);
+        //System.out.println(d.value);
+        //System.out.println(n.value);
         //C=M^d mod n
-        outputNumber = new HugeUnsignedInteger("1");  //C = 1
-        for(i=0; i<intD; i++){
-          resultString = outputNumber.multiplication(inputNumber);
-          //System.out.println("1: "+resultString);
-          tempNumber =  new HugeUnsignedInteger(resultString);
-          resultString = tempNumber.modulus(n);
-          //System.out.println("2: "+resultString);
-          outputNumber =  new HugeUnsignedInteger(resultString);
+        //P = C^x * (exp^2 % n)^d % n
+        HugeUnsignedInteger one = new HugeUnsignedInteger("1");
+        HugeUnsignedInteger two = new HugeUnsignedInteger("2");
+        fVal = new HugeUnsignedInteger("1");
+        dd = new HugeUnsignedInteger(d.value);
+        while(dd.equalTo(one) == 0){  //d != 1
+//          //Check if d value is even or odd
+//          if(d.modulus(two).equals("1")){  //Odd
+//            //c * c
+//            String cResult = fVal.multiplication(inputNumber);
+//            fVal = new HugeUnsignedInteger(cResult);
+//            //exp * exp
+//            String expResult = expVal.multiplication(expVal);
+//            expVal = new HugeUnsignedInteger(expResult);
+//            //exp % n
+//            expResult = expVal.modulus(n);
+//            expVal = new HugeUnsignedInteger(expResult);
+//            try{
+//            //d-1
+//              String newD = dd.subtraction(one);
+//              dd = new HugeUnsignedInteger(newD);
+//            }
+//            catch(SubtractionException ee){
+//              System.err.println(ee);
+//            }  
+//          }
+//          else{  //Even
+//            //c * 1
+//            String cResult = fVal.multiplication(one);
+//            fVal = new HugeUnsignedInteger(cResult);
+//            //exp * exp
+//            String expResult = expVal.multiplication(expVal);
+//            expVal = new HugeUnsignedInteger(expResult);
+//            //exp % n
+//            expResult = expVal.modulus(n);
+//            expVal = new HugeUnsignedInteger(expResult);
+//          }
+//          String divideD = dd.division(two);
+//          dd = new HugeUnsignedInteger(divideD);
+          
+          if(dd.modulus(two).equals("1")){  //Odd
+            String fResult = fVal.multiplication(expVal);
+            fVal = new HugeUnsignedInteger(fResult);
+            //d-1
+            try{        
+              String newD = dd.subtraction(one);
+              dd = new HugeUnsignedInteger(newD);
+            }
+            catch(SubtractionException ee){
+              //System.out.println("HERE");
+              System.err.println(ee);
+            }
+          }
+          //exp * exp
+          //System.out.println(expVal.value);
+          String expResult = expVal.multiplication(expVal);
+          expVal = new HugeUnsignedInteger(expResult);
+          //exp % n
+          expResult = expVal.modulus(n);
+          expVal = new HugeUnsignedInteger(expResult);
+          
+          String divideD = dd.division(two);
+          dd = new HugeUnsignedInteger(divideD);
         }
-        //Write to file
+        //When d is equal to 1
+        //System.out.println(fVal.value);
+        String expResult = expVal.multiplication(fVal);
+        expVal = new HugeUnsignedInteger(expResult);
+        String resultVal = expVal.modulus(n);
+        outputNumber = new HugeUnsignedInteger(resultVal);
         //System.out.println(outputNumber.value);
+        
+        //Write to file
         fWrite.write(outputNumber.value);
         fWrite.newLine();
       }
       fWrite.close();
+      fRead.close();
     }
     catch(IOException e){
       System.err.println(e);
     }
+    
   }
   
   //-----Test------

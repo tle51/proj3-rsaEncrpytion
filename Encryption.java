@@ -74,10 +74,26 @@ public class Encryption{
       eFile.createNewFile();
       BufferedWriter fWrite = new BufferedWriter(new FileWriter(eFile, true));
       
-      int c;
+      //int c;
       while((tempString = fRead.readLine()) != null){
+        
+//        //Flip
+//        StringReader ssRead = new StringReader(tempString);
+//        String reverseString = "";
+//        try{
+//          for(i=0; i<tempString.length(); i++){
+//            char c = (char) ssRead.read();
+//            reverseString = c + reverseString;
+//          }
+//        }
+//        catch(IOException e){
+//          System.err.println(e);
+//        }   
+        
         //Remove leading zero
+        //System.out.println(tempString);
         StringReader strRead = new StringReader(tempString);
+        //StringReader strRead = new StringReader(reverseString);
         tempString2 = "";
         int zeroCount = 0;
         try{
@@ -95,7 +111,7 @@ public class Encryption{
         catch(IOException e){
           System.err.println(e);
         }
-        //System.out.println(tempString2);
+        System.out.println(tempString2);
         
         //Convert to HugeUnsignedInteger
         inputNumber = new HugeUnsignedInteger(tempString2);
@@ -103,6 +119,7 @@ public class Encryption{
         //C=M^e mod n
         outputNumber = new HugeUnsignedInteger("1");  //C = 1
         for(i=0; i<intE; i++){
+          //System.out.println(i);
           resultString = outputNumber.multiplication(inputNumber);
           //System.out.println("1: " + resultString);
           tempNumber =  new HugeUnsignedInteger(resultString);
@@ -116,6 +133,7 @@ public class Encryption{
         fWrite.newLine();
       }
       fWrite.close();
+      fRead.close();
     }
     catch(IOException e){
       System.err.println(e);

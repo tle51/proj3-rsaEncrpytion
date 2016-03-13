@@ -1,6 +1,6 @@
 public class Test{
   public static void main(String args[]){
-    HugeUnsignedInteger one = new HugeUnsignedInteger("1");
+    HugeUnsignedInteger one = new HugeUnsignedInteger("9300001456");
     HugeUnsignedInteger two = new HugeUnsignedInteger("9");
 //    HugeUnsignedInteger three = new HugeUnsignedInteger("3242359292923939548");
 //    HugeUnsignedInteger four = new HugeUnsignedInteger("12345");
@@ -19,7 +19,7 @@ public class Test{
     
     //Multiplication
     //System.out.println(56 / 10 % 10);
-    System.out.println("Multiply: " + one.multiplication(two));
+    System.out.println("Multiply: " + one.multiplication(one));
     
     //Division
     //System.out.println(1423234/23238);
@@ -42,5 +42,7 @@ public class Test{
     System.out.println("Equal: " + one.equalTo(two));
     System.out.println("Greater: " + one.greaterThan(two));
     System.out.println("Less: " + one.lessThan(two));
+   
+    
   } 
 }

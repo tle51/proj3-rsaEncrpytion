@@ -213,6 +213,17 @@ public class HugeUnsignedInteger{
     int productSize;  //Size of product2
     int[] tempArr;
     int[] productArr;
+    
+    //Multiplying by 0
+    if(value.equals("0")){
+      result = "0";
+      return result;
+    }
+    if(value2.value.equals("0")){
+      result = "0";
+      return result;
+    }
+    
     //Determine the larger digit number
     if(numDigit >= value2.numDigit){
       tempSize = numDigit;
@@ -313,10 +324,10 @@ public class HugeUnsignedInteger{
     for(i=tempCount-1; i>=0; i--){
       result = result + Integer.toString(resultArr[i]);
     }
-    //Multiplying by 0
-    if((tempArr[tempSize-1] == 0 && tempSize == 1) || (productArr[productSize-1] == 0 && productSize == 1)){
-      result = "0";
-    }
+//    //Multiplying by 0
+//    if((tempArr[tempSize-1] == 0 && tempSize == 1) || (productArr[productSize-1] == 0 && productSize == 1)){
+//      result = "0";
+//    }
     
     return result;
   }
