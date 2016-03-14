@@ -100,7 +100,7 @@ public class Encryption{
           for(i=0; i<tempString.length(); i++){
             char cc = (char) strRead.read();
             if(cc == '0' && zeroCount == 0){
-              
+              zeroCount = 0;
             }
             else{
               zeroCount = 1;
@@ -110,6 +110,10 @@ public class Encryption{
         }
         catch(IOException e){
           System.err.println(e);
+        }
+        //If 00
+        if(tempString2.equals("")){
+          tempString2 = "0";
         }
         System.out.println(tempString2);
         

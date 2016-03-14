@@ -78,9 +78,9 @@ public class Decryption{
       //int c;
       while((tempString = fRead.readLine()) != null){
         //Convert to HugeUnsignedInteger
-        inputNumber = new HugeUnsignedInteger(tempString);
+        //inputNumber = new HugeUnsignedInteger(tempString);
         expVal = new HugeUnsignedInteger(tempString);
-        System.out.println(tempString);
+        //System.out.println(tempString);
         //System.out.println(d.value);
         //System.out.println(n.value);
         //C=M^d mod n
@@ -89,6 +89,7 @@ public class Decryption{
         HugeUnsignedInteger two = new HugeUnsignedInteger("2");
         fVal = new HugeUnsignedInteger("1");
         dd = new HugeUnsignedInteger(d.value);
+        //System.out.println(d.value);
         while(dd.equalTo(one) == 0){  //d != 1
 //          //Check if d value is even or odd
 //          if(d.modulus(two).equals("1")){  //Odd
@@ -139,11 +140,11 @@ public class Decryption{
           }
           //exp * exp
           //System.out.println(expVal.value);
-          String expResult = expVal.multiplication(expVal);
-          expVal = new HugeUnsignedInteger(expResult);
+          String expResult1 = expVal.multiplication(expVal);
+          expVal = new HugeUnsignedInteger(expResult1);
           //exp % n
-          expResult = expVal.modulus(n);
-          expVal = new HugeUnsignedInteger(expResult);
+          expResult1 = expVal.modulus(n);
+          expVal = new HugeUnsignedInteger(expResult1);
           
           String divideD = dd.division(two);
           dd = new HugeUnsignedInteger(divideD);
