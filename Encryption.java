@@ -19,7 +19,7 @@ public class Encryption{
     
     //Constructor
     public Encryption(String filePath){
-        xmlName = filePath;
+        xmlName = filePath.concat(".txt");
         xmlFile = new File(xmlName);
         readXML();
         encrypt();

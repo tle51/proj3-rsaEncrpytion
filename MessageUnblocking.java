@@ -16,7 +16,7 @@ public class MessageUnblocking{
     
     //Constructor
     public MessageUnblocking(String filePath){
-        blockName = filePath;
+        blockName = filePath.concat(".txt");
         blockFile = new File(blockName);
         unblockingMessage();
         convertDecimal();

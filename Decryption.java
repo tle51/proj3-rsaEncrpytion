@@ -21,7 +21,7 @@ public class Decryption{
     //Constructor
     public Decryption(String filePath, int block){
         privateName = filePath;
-        privateFile = new File(privateName);
+        privateName = filePath.concat(".txt");
         blockSize = block;
         readXML();
         decrypt();
