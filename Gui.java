@@ -23,17 +23,21 @@ public class Gui extends JFrame implements ActionListener{
     
     private JPanel panel; //For Dropdown Menu
     private JPanel panel2; //Panel to display the output
+    private JPanel blockPanel;
+    private JPanel unblockPanel;
+    private JPanel encryptPanel;
+    private JPanel decryptPanel;
     private JPanel fieldPanel; //Panel for 2 text fields
     private Container container;
     
     private String primeStr1, primeStr2;
+    private Boolean genKey = false;
     
     public Gui()
     {
         super("RSA Encryption Decryption");
         
         panel = new JPanel(); //panel object
-        panel2 = new JPanel();
         fieldPanel = new JPanel();
         bt1 = new JButton("Enter"); //Button to Submit the prime keys.
         menuBar = new JMenuBar(); //object for menu bar
@@ -166,6 +170,8 @@ public class Gui extends JFrame implements ActionListener{
         if(primeCheck(prime1) && primeCheck(prime2))
         {
             //Set prime numbers to the user input
+            JOptionPane.showMessageDialog(null, "Both values are valid prime numbers.",
+                                          "Prime Numbers", JOptionPane.INFORMATION_MESSAGE);
             primeStr1 = prime1;
             primeStr2 = prime2;
         }
@@ -196,39 +202,26 @@ public class Gui extends JFrame implements ActionListener{
     public static Boolean primeCheck(String p)
     {
         HugeUnsignedInteger hui = new HugeUnsignedInteger(p);
-        HugeUnsignedInteger two = new HugeUnsignedInteger("2");
+        HugeUnsignedInteger two = new HugeUnsignedInteger("1");
         
         //Divide the number by 2.
-        String nStr = hui.division(two);
+        String nStr = hui.multiplication(two);
         HugeUnsignedInteger nHui = new HugeUnsignedInteger(nStr);
         
         Long nl = Long.parseLong(nStr);
-        System.out.println("long nstr" + nl);
-        
         int i = 0;
-        for(i = 2; i <= Math.sqrt(nl); i+=2)
+        for(i = 2; i <= Math.sqrt(nl); i++)
         {
-            System.out.println("in for");
             String s = Integer.toString(i);
-            System.out.println("s isi " + s);
             HugeUnsignedInteger x = new HugeUnsignedInteger(s);
-            
-            System.out.println("x is" + x.value);
-            System.out.print("nhui   " +  nHui.value);
-            //System.out.println("     temp " + x + "  " + i);
-            
             String temp = hui.modulus(x);
-            
-            System.out.println("temp2 " + temp);
             
             if(Long.parseLong(temp) == 0)
             {
                 System.out.println("in is temp = 0?");
                 return false;
             }
-            System.out.println("temp" + temp);
         }
-        
         return true;
     }
     
@@ -267,14 +260,12 @@ public class Gui extends JFrame implements ActionListener{
     //Key object to display the key information.
     public void createKey()
     {
-        //Set panel2 to invisible, to remove previous menu's output
-        setVisible(false);
-        container.remove(panel2);
+        
+        panel2 = new JPanel();
         
         //Check if User entered prime number or not
         while(primeStr1 == null || primeStr2 == null)
         {
-            generatePrime();
             generatePrime();
         }
         
@@ -282,117 +273,128 @@ public class Gui extends JFrame implements ActionListener{
         String publicFile = JOptionPane.showInputDialog("Enter file name for public key.");
         String privateFile = JOptionPane.showInputDialog("Enter file name for private key.");
         
-        RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, publicFile, privateFile);
-        
-        JLabel l = new JLabel("Public key " + publicFile + " and private key " + privateFile + " was created successfully.");
-        
-        //make room between text field of prime numbers and the message.
-        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
-        
-        panel2.add(l);
-        container = getContentPane();
-        container.add(panel2, BorderLayout.SOUTH);
-        
-        setVisible(true);
+        if(publicFile != null && privateFile != null)
+        {
+            RsaAlgorithm key = new RsaAlgorithm(primeStr1, primeStr2, publicFile, privateFile);
+            
+            System.out.println("prime read is " + primeStr1);
+            System.out.println("prime2 read is "+ primeStr2);
+            
+            JLabel l = new JLabel("Public key " + publicFile + " and private key " + privateFile + " was created successfully.");
+            
+            //make room between text field of prime numbers and the message.
+            panel2.add(Box.createRigidArea(new Dimension(0, 200)));
+            
+            panel2.add(l);
+            container = getContentPane();
+            container.add(panel2, BorderLayout.SOUTH);
+            setVisible(true);
+        }
     }
     
     //Display Blocked File's information
     public void blockMenu()
     {
-        //Set panel2 to invisible, to remove previous menu's output
-        setVisible(false);
-        container.remove(panel2);
+        //container.remove(panel2);
         
+        blockPanel = new JPanel();
         //Get name of the block file.
         String messageFile = JOptionPane.showInputDialog("Enter file name of the message.");
         String blockFile = JOptionPane.showInputDialog("Enter file name to save the block.");
         String blockSize = JOptionPane.showInputDialog("Enter block size.");
         
-        MessageBlocking blocking = new MessageBlocking(blockFile, Integer.parseInt(blockSize), messageFile);
-        JLabel l = new JLabel("Block File created successfully.");
-        panel2.add(l);
-        
-        //make room between text field of prime numbers and the message.
-        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
-        
-        panel2.add(l);
-        container = getContentPane();
-        container.add(panel2, BorderLayout.SOUTH);
-        
-        setVisible(true);
+        if(messageFile != null && blockFile != null && blockSize != null)
+        {
+            MessageBlocking blocking = new MessageBlocking(blockFile, Integer.parseInt(blockSize), messageFile);
+            JLabel l = new JLabel("Block File created successfully.");
+            blockPanel.add(l);
+            
+            //make room between text field of prime numbers and the message.
+            blockPanel.add(Box.createRigidArea(new Dimension(0, 200)));
+            
+            blockPanel.add(l);
+            container = getContentPane();
+            container.add(blockPanel, BorderLayout.SOUTH);
+            
+            setVisible(true);
+        }
     }
     
     //Display Unblocked File's information
     public void unblockMenu()
     {
-        //Set panel2 to invisible, to remove previous menu's output
-        setVisible(false);
-        container.remove(panel2);
+        unblockPanel = new JPanel();
         
         //Get name of the block file.
         String unblockFile = JOptionPane.showInputDialog("Enter filename containg the block.");
         //String messageFile = JOptionPane.showInputDialog("Enter file name of the message.");
         
-        MessageUnblocking unblocking = new MessageUnblocking(unblockFile);
-        JLabel l = new JLabel("unblocking File successfully done.");
-        panel2.add(l);
-        
-        //make room between text field of prime numbers and the message.
-        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
-        
-        panel2.add(l);
-        container = getContentPane();
-        container.add(panel2, BorderLayout.SOUTH);
-        
-        setVisible(true);
+        if(unblockFile != null)
+        {
+            MessageUnblocking unblocking = new MessageUnblocking(unblockFile);
+            
+            JLabel l = new JLabel("Unblocking File successfully done.");
+            unblockPanel.add(l);
+            
+            //make room between text field of prime numbers and the message.
+            unblockPanel.add(Box.createRigidArea(new Dimension(0, 200)));
+            
+            unblockPanel.add(l);
+            container = getContentPane();
+            container.add(unblockPanel, BorderLayout.SOUTH);
+            
+            setVisible(true);
+        }
     }
     
     //Display Unblocked File's information
     public void encryptMenu()
     {
-        //Set panel2 to invisible, to remove previous menu's output
-        setVisible(false);
-        container.remove(panel2);
+        encryptPanel = new JPanel();
         
         //Get name of the block file.
-        String encryptFile = JOptionPane.showInputDialog("Enter file name of private or public key");
+        String encryptFile = JOptionPane.showInputDialog("Enter file name of the public key.");
         
-        Encryption encrypt = new Encryption(encryptFile);		
-        JLabel l = new JLabel("Encryption done successfully.");
-        panel2.add(l);
-        
-        //make room between text field of prime numbers and the message.
-        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
-        
-        panel2.add(l);
-        container = getContentPane();
-        container.add(panel2, BorderLayout.SOUTH);
-        
-        setVisible(true);
+        if(encryptFile != null)
+        {
+            Encryption encrypt = new Encryption(encryptFile);
+            JLabel l = new JLabel("Encryption done successfully.");
+            encryptPanel.add(l);
+            
+            //make room between text field of prime numbers and the message.
+            encryptPanel.add(Box.createRigidArea(new Dimension(0, 200)));
+            
+            encryptPanel.add(l);
+            container = getContentPane();
+            container.add(encryptPanel, BorderLayout.SOUTH);
+            
+            setVisible(true);
+        }
     }	
     
     //Display Unblocked File's information
     public void decryptMenu()
     {
-        //Set panel2 to invisible, to remove previous menu's output
-        setVisible(false);
-        container.remove(panel2);
+        decryptPanel = new JPanel();
         
         //Get name of the file to decrypt from
-        String decryptFile = JOptionPane.showInputDialog("Enter filename to decrpt from.");
+        String decryptFile = JOptionPane.showInputDialog("Enter private key file name.");
         
-        Decryption decrypt = new Decryption(decryptFile);		
-        JLabel l = new JLabel("Decryption done successfully.");
-        panel2.add(l);
-        
-        //make room between text field of prime numbers and the message.
-        panel2.add(Box.createRigidArea(new Dimension(0, 200)));
-        
-        panel2.add(l);
-        container = getContentPane();
-        container.add(panel2, BorderLayout.SOUTH);
-        
-        setVisible(true);
+        if(decryptFile != null)
+        {
+            Decryption decrypt = new Decryption(decryptFile);		
+            JLabel l = new JLabel("Decryption done successfully.");
+            decryptPanel.add(l);
+            
+            //make room between text field of prime numbers and the message.
+            decryptPanel.add(Box.createRigidArea(new Dimension(0, 200)));
+            
+            decryptPanel.add(l);
+            container = getContentPane();
+            container.add(decryptPanel, BorderLayout.SOUTH);
+            
+            setVisible(true);
+        }
     }
 				
     //Message displaying information about the program.
@@ -407,6 +409,17 @@ public class Gui extends JFrame implements ActionListener{
     {
         //TODO
         JOptionPane.showMessageDialog(null, "Program's functions are located under the RSA Menu.\n"
-                                      + "TODO\n", "Help", JOptionPane.INFORMATION_MESSAGE);
+                                      + "Provide 2 prime numbers to generate public and private keys.\n" 
+                                      + "Follow this general procedure:\n"
+                                      + "1. Person 1 creates a public-private key set.\n"
+                                      + "2. Person 1 sends the public key to Person 2 but keeps the private key\n"
+                                      + "3. Person 2 creates an ASCII text message.\n"
+                                      + "4. Person 2 blocks the message into a blocked file with block size X.\n"
+                                      + "5. Person 2 uses Person 1’s public key to encrypt the blocked file.\n"
+                                      + "6. Person 2 send the encrypted blocked file to Person 1\n"
+                                      + "7. Person 1 decrypts the encrypted blocked file using Person 1’s \n" 
+                                      + "   private key to get the original blocked file Person 2 created in step 4.\n"
+                                      + "8. Person 1 unblocks the file created in step 7 to get the original ASCII text message.\n",
+                                      "Help", JOptionPane.INFORMATION_MESSAGE);
     }
 }//End of Class

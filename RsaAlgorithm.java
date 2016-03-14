@@ -22,12 +22,13 @@ public class RsaAlgorithm
         p = prime1;
         q = prime2;
         
-        System.out.println(p);
-        System.out.println(q);
+        System.out.println("prime1 is " + p);
+        System.out.println("prime2 is " + q);
         
         generatePhi();
         System.out.println(phi);
         generateN();
+        System.out.println("n in main " + n);
         generateE();
         generateD();
         
@@ -74,7 +75,10 @@ public class RsaAlgorithm
     public void generateN()
     {
         hui1 = new HugeUnsignedInteger(p);
-        hui2 = new HugeUnsignedInteger(p);
+        hui2 = new HugeUnsignedInteger(q);
+        
+        System.out.println("HUI1 " + hui1.value);
+        System.out.println("HUI2 " + hui2.value);
         
         n = hui1.multiplication(hui2);
         System.out.println("Value of n: " + n);
@@ -89,27 +93,19 @@ public class RsaAlgorithm
     //Check if the number is GCD using Euclidean Algorithm
     public int isGcd(String s)
     {
-        System.out.println("in isGCD");
-        //  hui1 = new HugeUnsignedInteger(s);
-        //  HugeUnsignedInteger phiHui = new HugeUnsignedInteger(phi);
         String temp = "0";
         String phiTemp = phi; //set the value of phi to a temp variable
-        System.out.println(phiTemp);
         
         while(!phi.equals("0"))
         {
-            System.out.println("in gcd while" + phi);
             //objects for s and phi
             hui1 = new HugeUnsignedInteger(s);
             HugeUnsignedInteger phiHui = new HugeUnsignedInteger(phi);
             temp = phi;
             phi = hui1.modulus(phiHui);   //e%phi
-            System.out.println("after mod call in gcd " + phi);
+            //System.out.println("after mod call in gcd " + phi);
             s = temp; //update s
-            
-            System.out.println("s is" + s + "temp is" + temp);
         }
-        System.out.println("end of isGCD" + temp);
         
         //Reset phi to its original value
         phi = phiTemp;
@@ -127,9 +123,7 @@ public class RsaAlgorithm
         
         if(isGcd(e) == 1)
         {
-            System.out.println("if gcd2 = 1");
             e = Integer.toString(temp);
-            System.out.println("if gcd2 = 1" + e);
         }
         else
         {
@@ -137,13 +131,10 @@ public class RsaAlgorithm
             while(isGcd(e) != 1)
             {
                 temp = (Integer.parseInt(e)) + 1;
-                System.out.println("temp is " + temp);
                 e = Integer.toString(temp);
-                System.out.println("e in whiel  " + e);
                 i++;
             }
         }
-        
         System.out.println("e val is " + e);
     }
     
@@ -151,12 +142,12 @@ public class RsaAlgorithm
     //Let k = 1
     public void generateD()
     {
-        System.out.println("phi in D  " +phi);
+        //System.out.println("phi in D  " +phi);
         hui1 = new HugeUnsignedInteger(phi);
         hui2 = new HugeUnsignedInteger("1");
         
         String temp = hui1.multiplication(hui2); //Stores k * phi
-        System.out.println("temp in gen D  " + phi + " " +temp);
+        //System.out.println("temp in gen D  " + phi + " " +temp);
         
         //HUI obj for 1 and k*phi value
         one = new HugeUnsignedInteger("1");
@@ -182,6 +173,7 @@ public class RsaAlgorithm
     {
         //add .txt file format to the file name
         String fileName = file.concat(".txt");
+        System.out.println("N in pub " + n);
         try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
         {
             //write XML format to the file
@@ -203,6 +195,8 @@ public class RsaAlgorithm
     public void createPriKey(String file)
     {
         //add .txt file format to the file name 
+        System.out.println("N in priv " + n);
+        
         fileName = file.concat(".txt");
         try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
         {
