@@ -17,8 +17,19 @@ public class MessageBlocking{
     
     //Constructor
     public MessageBlocking(String nameString, int sizeInput, String file){  //Take in block file name and block size
-        outputName = nameString.concat(".txt");
-        messageFile = file.concat(".txt");
+        outputName = nameString;
+        messageFile = file;
+        
+        //add file extention if it's not entered by the user
+        if(!outputName.endsWith(".txt"))
+        {
+            outputName = nameString.concat(".txt");
+        }
+        if(!messageFile.endsWith(".txt"))
+        {
+            messageFile = file.concat(".txt");
+        }
+        
         blockSize = sizeInput;
         blockFile = new File(outputName);
         convertMessage();

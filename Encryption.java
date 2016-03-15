@@ -19,7 +19,13 @@ public class Encryption{
     
     //Constructor
     public Encryption(String filePath){
-        xmlName = filePath.concat(".txt");
+        xmlName = filePath;
+        
+        //add file extention if it's not entered by the user
+        if(!xmlName.endsWith(".txt"))
+        {
+            xmlName = filePath.concat(".txt");
+        }
         xmlFile = new File(xmlName);
         readXML();
         encrypt();

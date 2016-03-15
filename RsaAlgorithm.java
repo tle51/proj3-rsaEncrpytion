@@ -18,6 +18,7 @@ public class RsaAlgorithm
     private String fileName;
     private int k = 1;
     
+    //Constructor 
     public RsaAlgorithm(String prime1, String prime2, String pubFile, String priFile)
     {
         p = prime1;
@@ -186,8 +187,12 @@ public class RsaAlgorithm
     
     public void createPubKey(String file)
     {
-        //add .txt file format to the file name
-        String fileName = file.concat(".txt");
+        fileName = file;
+        //add file extention if it's not entered by the user
+        if(!fileName.endsWith(".txt"))
+        {
+            String fileName = file.concat(".txt");
+        }
         System.out.println("N in pub " + n);
         try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
         {
@@ -209,10 +214,12 @@ public class RsaAlgorithm
     
     public void createPriKey(String file)
     {
-        //add .txt file format to the file name 
-        System.out.println("N in priv " + n);
-        
-        fileName = file.concat(".txt");
+        fileName = file;
+        //add file extention if it's not entered by the user
+        if(!fileName.endsWith(".txt"))
+        {
+            fileName = file.concat(".txt");
+        }
         try(BufferedWriter writing = new BufferedWriter(new FileWriter(fileName)))
         {
             //write XML format to the file
