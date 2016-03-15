@@ -1,6 +1,6 @@
 Tan Le (tle51) & Janki Patel (jpate53)
 CS 342 - Project 3: RSA Encryption/Decryption
-Readme
+ReadMe
 
 We got the algorithm to check for prime number from the following website:
 http://www.mkyong.com/java/how-to-determine-a-prime-number-in-java/
@@ -9,12 +9,13 @@ We used the following website to get the algorithm for GCD:
 http://introcs.cs.princeton.edu/java/23recursion/Euclid.java.html
 
 How to Use This Program:
+- Run the program using Main.java class.
 - User must enter file name without any file extensions.
   (e.g. “id_rsa.pub”)
 - There are 2 text fields provided to enter prime numbers. 
 - If you don’t enter the prime numbers, and select “Create Key” option from the RSA dropdown menu, 
   then the computer will generate two prime numbers from the text file called “primeNumbers.rsc”.
-  The path of this file is TODO.
+  This file would be located in the same directory as the code.
 	- Then the user is prompt to enter file names of public and private key. 
 - One the key has been created, you can make a block file.
 	- First, the user is prompt to enter a file name that contains a message that needs to be blocked.
