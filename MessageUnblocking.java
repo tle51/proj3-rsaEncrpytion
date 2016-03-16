@@ -9,15 +9,18 @@ import java.util.Scanner;
 public class MessageUnblocking{
     private String blockName;
     private File blockFile;
-    private String unblockName = "unblock.txt";
-    private File unblockFile = new File(unblockName);
+    private String unblockName;
+    private File unblockFile;
     private String stringInt = "";
     private int i;
     
     //Constructor
-    public MessageUnblocking(String filePath){
-        blockName = filePath;
+    public MessageUnblocking(String filePath, String savePath){
+        blockName = filePath.concat(".txt");
+        //blockName = filePath;
         blockFile = new File(blockName);
+        unblockName = savePath.concat(".txt");
+        unblockFile = new File(unblockName);
         //unblockingMessage();
         //convertDecimal();
         convertBlock();
@@ -118,7 +121,7 @@ public class MessageUnblocking{
                     char asciiChar = (char) charValue;
                     if(charValue != 0){
                         fWrite.write(asciiChar);
-                        //fWrite.newLine();       
+                        //fWrite.newLine();
                     }
                     tempString = "";
                     
@@ -133,98 +136,99 @@ public class MessageUnblocking{
     
     //Convert each block to ASCII characters
     public void convertBlock(){
-      String tempString = "";
-      int tempLen;
-      String reverseString = "";
-      String resultString = "";
-      try{
-        //Check if file exist
-        if(unblockFile.exists()){
-          unblockFile.delete();
-          unblockFile.createNewFile();
-        }
-        else{
-          unblockFile.createNewFile();
-        }
-        //Read block file
-        BufferedReader fRead = new BufferedReader(new FileReader(blockFile));
-        while((tempString = fRead.readLine()) != null){
-          //Read string
-          StringReader strRead = new StringReader(tempString);
-          tempLen = tempString.length();
-          System.out.println(tempString);
-          reverseString = "";
-          tempString = "";
-          for(i=0; i<tempLen; i++){
-            char c = (char) strRead.read();
-            if(i%2 == 0){
-              tempString = tempString + c;
+        String tempString = "";
+        int tempLen;
+        String reverseString = "";
+        String resultString = "";
+        String outputString = "";
+        try{
+            //Check if file exist
+            if(unblockFile.exists()){
+                unblockFile.delete();
+                unblockFile.createNewFile();
             }
             else{
-              tempString = tempString + c;
-              reverseString = tempString + reverseString;
-              tempString = "";
+                unblockFile.createNewFile();
             }
-          }
-          System.out.println(reverseString);
-   
-          BufferedWriter fWrite = new BufferedWriter(new FileWriter(unblockFile,true));
-          //Convert to ascii characters
-          StringReader revRead = new StringReader(reverseString);
-          for(i=0; i<reverseString.length(); i++){
-            char c = (char) revRead.read();
-            if(i%2 == 0){
-              resultString = resultString + c;
+            //Read block file
+            BufferedReader fRead = new BufferedReader(new FileReader(blockFile));
+            while((tempString = fRead.readLine()) != null){
+                //Read string
+                StringReader strRead = new StringReader(tempString);
+                tempLen = tempString.length();
+                System.out.println(tempString);
+                reverseString = "";
+                outputString = "";
+                for(i=0; i<tempLen; i++){
+                    char c = (char) strRead.read();
+                    if(i%2 == 0){
+                        outputString = outputString + c;
+                    }
+                    else{
+                        outputString = outputString + c;
+                        reverseString = outputString + reverseString;
+                        outputString = "";
+                    }
+                }
+                System.out.println(reverseString);
+                
+                BufferedWriter fWrite = new BufferedWriter(new FileWriter(unblockFile,true));
+                //Convert to ascii characters
+                StringReader revRead = new StringReader(reverseString);
+                for(i=0; i<reverseString.length(); i++){
+                    char c = (char) revRead.read();
+                    if(i%2 == 0){
+                        resultString = resultString + c;
+                    }
+                    else{
+                        resultString = resultString + c;
+                        //Vertical tab
+                        if(resultString.equals("01")){
+                            resultString = "11";
+                        }
+                        //Horizontal tab
+                        else if(resultString.equals("02")){
+                            resultString = "09";
+                        }
+                        //New line
+                        else if(resultString.equals("03")){
+                            resultString = "10";
+                        }
+                        //Carriage return
+                        else if(resultString.equals("04")){
+                            resultString = "13";
+                        }
+                        //Null
+                        else if(resultString.equals("00")){
+                            resultString = "00";
+                        }
+                        else{
+                            int tempInt = Integer.parseInt(resultString) + 27;
+                            resultString = Integer.toString(tempInt);
+                        }
+                        //Write to file
+                        int charValue = Integer.parseInt(resultString);
+                        char asciiChar = (char) charValue;
+                        System.out.println(asciiChar);
+                        if(charValue != 0){
+                            fWrite.write(asciiChar);
+                        }
+                        resultString = "";
+                    }
+                }  
+                fWrite.close();                                           
             }
-            else{
-              resultString = resultString + c;
-              //Vertical tab
-              if(resultString.equals("01")){
-                resultString = "11";
-              }
-              //Horizontal tab
-              else if(resultString.equals("02")){
-                resultString = "09";
-              }
-              //New line
-              else if(resultString.equals("03")){
-                resultString = "10";
-              }
-              //Carriage return
-              else if(resultString.equals("04")){
-                resultString = "13";
-              }
-              //Null
-              else if(resultString.equals("00")){
-                resultString = "00";
-              }
-              else{
-                int tempInt = Integer.parseInt(resultString) + 27;
-                resultString = Integer.toString(tempInt);
-              }
-              //Write to file
-              int charValue = Integer.parseInt(resultString);
-              char asciiChar = (char) charValue;
-              System.out.println(asciiChar);
-              if(charValue != 0){
-                fWrite.write(asciiChar);
-              }
-              resultString = "";
-            }
-          }  
-          fWrite.close();                                           
         }
-      }
-      catch(IOException e){
-        System.err.println(e);
-      }
+        catch(IOException e){
+            System.err.println(e);
+        }
     }
     
     //----------------TEST----------------
-    public static void main(String args[]){
-      MessageUnblocking unblock = new MessageUnblocking("block.txt");    
+    //public static void main(String args[]){
+    // MessageUnblocking unblock = new MessageUnblocking("block.txt");    
     //    String one = "01";
     //    System.out.println(Integer.parseInt(one));
-    }
+    //}
     //------------------------------------
 }
